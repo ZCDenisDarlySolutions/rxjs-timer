@@ -1,0 +1,10 @@
+<p>This thing work</p>
+
+<div class="timer">
+  <span class="time">{{ time / 100 | number : "1.0-0" }}</span>
+  <span class="time">{{ time * 10 | date : "SS" }}</span>
+</div>
+
+<button (click)="onStart()" [disabled]="isRunning">Start</button>
+<button (click)="onStop()" [disabled]="!isRunning">Stop</button>
+<button (click)="onReset()" [disabled]="time === 0 && !isRunning">Reset</button>
