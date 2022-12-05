@@ -1,0 +1,10 @@
+<p>This thing work</p>
+
+<div class="timer">
+  <span class="time">{{ time.length < 3 ? 0 : (time | slice : 0 : -2) }}</span>
+  <span class="time">{{ time | slice : -2 }}</span>
+</div>
+
+<button (click)="onStart()" [disabled]="clock">Start</button>
+<button (click)="onStop()" [disabled]="!clock">Stop</button>
+<button (click)="onReset()" [disabled]="!clock && time === '0'">Reset</button>
