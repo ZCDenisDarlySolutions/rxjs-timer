@@ -1,7 +1,5 @@
 import { Component, OnDestroy } from '@angular/core';
-import { interval, Subscription } from 'rxjs';
-
-const rxTimer = interval(10);
+import { interval, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-timer',
@@ -9,25 +7,24 @@ const rxTimer = interval(10);
   styleUrls: ['./timer.component.scss'],
 })
 export class TimerComponent implements OnDestroy {
-  time = '0';
-  clock?: Subscription | null;
+  time = 0;
+  isRunning: boolean = false;
+  stop$: Subject<void> = new Subject();
+  clock$ = interval(10).pipe(takeUntil(this.stop$));
 
   ngOnDestroy() {
-    this.clearInterval();
+    this.stop$.next();
+    this.stop$.complete();
   }
 
   private clearInterval() {
-    if (!this.clock) {
-      return;
-    }
-    this.clock.unsubscribe();
-    this.clock = null;
+    this.stop$.next();
+    this.isRunning = false;
   }
 
   onStart() {
-    this.clock = rxTimer.subscribe(() => {
-      this.time = `${+this.time + 1}`.padStart(2, '0');
-    });
+    this.clock$.subscribe(() => this.time++);
+    this.isRunning = true;
   }
 
   onStop() {
@@ -35,7 +32,7 @@ export class TimerComponent implements OnDestroy {
   }
 
   onReset() {
-    this.time = '0';
+    this.time = 0;
     this.clearInterval();
   }
 }

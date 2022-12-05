@@ -1,10 +1,10 @@
 <p>This thing work</p>
 
 <div class="timer">
-  <span class="time">{{ time.length < 3 ? 0 : (time | slice : 0 : -2) }}</span>
-  <span class="time">{{ time | slice : -2 }}</span>
+  <span class="time">{{ time / 100 | number : "1.0-0" }}</span>
+  <span class="time">{{ time * 10 | date : "SS" }}</span>
 </div>
 
-<button (click)="onStart()" [disabled]="clock">Start</button>
-<button (click)="onStop()" [disabled]="!clock">Stop</button>
-<button (click)="onReset()" [disabled]="!clock && time === '0'">Reset</button>
+<button (click)="onStart()" [disabled]="isRunning">Start</button>
+<button (click)="onStop()" [disabled]="!isRunning">Stop</button>
+<button (click)="onReset()" [disabled]="time === 0 && !isRunning">Reset</button>
